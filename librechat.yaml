@@ -1,0 +1,14 @@
+version: 1.0.0
+
+endpoints:
+  custom:
+    - name: "Ollama"
+      apiKey: "ollama"
+      baseURL: "http://ollama:11434/v1/"
+      models:
+        default: ["llama3"]
+        fetch: true
+
+    - name: "KnowledgeBase"
+      apiKey: "none"
+      baseURL: "http://rag-api:8000"

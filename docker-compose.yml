@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  librechat:
+    image: ghcr.io/danny-avila/librechat:latest
+    ports:
+      - "3080:3080"
+    env_file:
+      - .env
+    volumes:
+      - ./librechat.yaml:/app/librechat.yaml
+    depends_on:
+      - mongo
+      - ollama
+      - rag-api
+
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo_data:/data/db
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  rag-api:
+    build: ./rag-api
+    environment:
+      - MANTICORE_URL=http://sib-prod-manticore:9308
+      - OLLAMA_URL=http://ollama:11434
+
+volumes:
+  mongo_data:
+  ollama_data:
